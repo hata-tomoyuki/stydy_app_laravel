@@ -72,13 +72,16 @@ watch(() => props.studies.studies, (newStudies) => {
         // 月ごとのラベルとデータを集計
         dateRange.forEach((date) => {
             labels.push(dayjs(date).format('MM-DD'));
-            const studySessions = newStudies.filter(session =>
-                dayjs(session.study_date).format('YYYY-MM') === dayjs(date).format('YYYY-MM')
+            // その日の学習セッションを探す
+            const studySession = newStudies.find(session =>
+                dayjs(session.study_date).format('YYYY-MM-DD') === date
             );
-            const totalDuration = studySessions.reduce((sum, session) => sum + session.duration, 0);
-            data.push(totalDuration);
+            // その日の学習時間を取得、もしセッションが存在しなければ0を追加
+            const duration = studySession ? studySession.duration : 0;
+            data.push(duration);
         });
     }
+
 
 
 
