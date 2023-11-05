@@ -17,7 +17,7 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('analysis', [AnalysisController::class, 'index'])->name('analysis');
+Route::get('analysis', [AnalysisController::class, 'index'])->name('analysis')->middleware(['auth', 'verified']);
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [

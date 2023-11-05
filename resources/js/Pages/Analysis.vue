@@ -1,6 +1,5 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import Welcome from '@/Components/Welcome.vue';
 import Chart from '@/Components/Chart.vue';
 import { reactive, ref } from 'vue';
 

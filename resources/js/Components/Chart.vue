@@ -1,7 +1,6 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue';
 import { Chart, registerables } from 'chart.js';
-import { BarChart } from 'vue-chart-3';
 import { LineChart } from 'vue-chart-3';
 import { defineProps } from '@vue/runtime-core';
 import dayjs from 'dayjs';
@@ -12,7 +11,6 @@ const props = defineProps({
     studies: Object,
     type: String,
 });
-
 
 const graphData = ref({
     labels: [],
