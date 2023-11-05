@@ -51,6 +51,9 @@ const logout = () => {
                                 <NavLink :href="route('studies.index')" :active="route().current('studies.index')">
                                     ダッシュボード
                                 </NavLink>
+                                <NavLink :href="route('analysis')" :active="route().current('analysis')">
+                                    グラフ表示
+                                </NavLink>
                             </div>
                         </div>
 
@@ -204,6 +207,9 @@ const logout = () => {
                     <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink :href="route('studies.index')" :active="route().current('studies.index')">
                             ダッシュボード
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('analysis')" :active="route().current('analysis')">
+                            グラフ表示
                         </ResponsiveNavLink>
                     </div>
 

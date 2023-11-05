@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\StudySession;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -39,9 +40,10 @@ class StudySessionController extends Controller
      */
     public function store(Request $request)
     {
+        // dd(Carbon::parse($request->date)->format('Y-m-d'));
         StudySession::create([
             'user_id' => $request->user()->id,
-            'study_date' => $request->date,
+            'study_date' => Carbon::parse($request->date)->format('Y-m-d'),
             'subject' => $request->subject,
             'duration' => $request->duration,
             'memo' => $request->memo,
