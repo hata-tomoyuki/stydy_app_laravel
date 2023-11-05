@@ -9,7 +9,7 @@ use Inertia\Inertia;
 
 class AnalysisController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         Carbon::setWeekStartsAt(Carbon::SUNDAY);
         Carbon::setWeekEndsAt(Carbon::SATURDAY);
@@ -22,11 +22,10 @@ class AnalysisController extends Controller
             ->select('id', 'user_id', 'subject', 'duration', 'study_date')
             ->orderBy('study_date', 'asc')
             ->get();
-        // dd($studies, $startDate, $endDate);
-
 
         return Inertia::render('Analysis', [
             'studies' => $studies
         ]);
+        return Inertia::render('Analysis');
     }
 }

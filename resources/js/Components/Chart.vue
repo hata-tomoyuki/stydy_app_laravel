@@ -9,8 +9,10 @@ import dayjs from 'dayjs';
 Chart.register(...registerables);
 
 const props = defineProps({
-    studies: Array
+    studies: Object,
+    type: String,
 });
+
 
 const graphData = ref({
     labels: [],
@@ -38,19 +40,47 @@ const chartOptions = ref({
     }
 });
 
-watch(() => props.studies, (newStudies) => {
-    const startDate = dayjs().startOf('week').format('YYYY-MM-DD'); // 週の初め
-    const endDate = dayjs().endOf('week').format('YYYY-MM-DD'); // 週の終わり
-    const dateRange = generateDateRange(startDate, endDate);
+watch(() => props.studies.studies, (newStudies) => {
+    if (!newStudies) {
+        return;
+    }
+
+    let startDate, endDate, dateRange;
+    if (props.type === 'perMonth') {
+        startDate = dayjs().startOf('month').format('YYYY-MM-DD');
+        endDate = dayjs().endOf('month').format('YYYY-MM-DD');
+        dateRange = generateDateRange(startDate, endDate);
+    } else {
+        // 既存の週表示のロジックを保持
+        startDate = dayjs().startOf('week').format('YYYY-MM-DD');
+        endDate = dayjs().endOf('week').format('YYYY-MM-DD');
+        dateRange = generateDateRange(startDate, endDate);
+    }
 
     const labels = [];
     const data = [];
 
-    dateRange.forEach((date) => {
-        labels.push(date);
-        const studySession = newStudies.find(session => session.study_date === date);
-        data.push(studySession ? studySession.duration : 0);
-    });
+    if (props.type === 'perWeek') {
+        dateRange.forEach((date) => {
+            labels.push(date);
+            const studySession = newStudies.find(session => session.study_date === date);
+            data.push(studySession ? studySession.duration : 0);
+        });
+    }
+
+    if (props.type === 'perMonth') {
+        // 月ごとのラベルとデータを集計
+        dateRange.forEach((date) => {
+            labels.push(dayjs(date).format('MM-DD'));
+            const studySessions = newStudies.filter(session =>
+                dayjs(session.study_date).format('YYYY-MM') === dayjs(date).format('YYYY-MM')
+            );
+            const totalDuration = studySessions.reduce((sum, session) => sum + session.duration, 0);
+            data.push(totalDuration);
+        });
+    }
+
+
 
     graphData.value = {
         labels,
@@ -63,6 +93,7 @@ watch(() => props.studies, (newStudies) => {
 }, {
     immediate: true
 });
+
 </script>
 
 <template>
